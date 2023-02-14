@@ -18,4 +18,4 @@ go run ./cmd/inputs
 
 # Smart Contracts
 
-The contracts in scope are located in [Drive](https://drive.google.com/drive/folders/16bT_VRmM3_5hwEAKpFYIsCWc2GsFz2IZ)
+The contracts in scope are located in [Drive](https://drive.google.com/drive/folders/1407C0Nnkpf6dadKKmCjiRgsZc10kVO4j?usp=share_link)
