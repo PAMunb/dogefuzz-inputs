@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/dogefuzz/dogefuzz/pkg/common"
+	"github.com/dogefuzz/inputs/pkg/common"
 )
 
 const DELIMITER = "================================"

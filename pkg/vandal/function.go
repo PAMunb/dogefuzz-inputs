@@ -3,7 +3,7 @@ package vandal
 import (
 	"regexp"
 
-	"github.com/dogefuzz/dogefuzz/pkg/common"
+	"github.com/dogefuzz/inputs/pkg/common"
 )
 
 func NewFunctionFromLines(lines []string) common.Function {

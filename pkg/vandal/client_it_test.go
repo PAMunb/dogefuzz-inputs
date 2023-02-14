@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/dogefuzz/dogefuzz/pkg/solc"
+	"github.com/dogefuzz/inputs/pkg/solc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -39,7 +39,7 @@ contract HelloWorld {
 	compiler := solc.NewSolidityCompiler("/tmp/dogefuzz/")
 	contract, _ := compiler.CompileSource("HelloWorld", VALID_SOLIDITY_FILE)
 
-	c := NewVandalClient("http://localhost:51243")
+	c := NewVandalClient("http://localhost:5005")
 	blocks, functions, err := c.Decompile(context.Background(), contract.CompiledCode)
 	assert.Equal(s.T(), 30, len(blocks))
 	assert.Equal(s.T(), 2, len(functions))
