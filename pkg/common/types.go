@@ -30,3 +30,9 @@ type Function struct {
 	ExitBlock  string   `json:"exitBlock"`
 	Body       []string `json:"body"`
 }
+
+type ContractInfo struct {
+	Name       string   `json:"name"`
+	Weaknesses []string `json:"weaknesses"`
+	Link       string   `json:"string"`
+}
