@@ -31,6 +31,8 @@ func main() {
 			setNumberOfCriticalInstructions(&contractSlice[i], criticalInstructions)
 		}
 	}
+
+	common.GenerateJsonFileFromContractInfoSlice(contractSlice)
 }
 
 func setNumberOfBlocks(contract *common.ContractInfo, numberOfBlocks int) {
