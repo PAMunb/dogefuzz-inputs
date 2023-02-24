@@ -32,7 +32,10 @@ type Function struct {
 }
 
 type ContractInfo struct {
-	Name       string   `json:"name"`
-	Weaknesses []string `json:"weaknesses"`
-	Link       string   `json:"string"`
+	Name                         string         `json:"name"`
+	Weaknesses                   []string       `json:"weaknesses"`
+	Link                         string         `json:"link"`
+	NumberOfBlocks               int            `json:"numberOfBlocks"`
+	NumberOfBranches             int            `json:"numberOfBranches"`
+	NumberOfCriticalInstructions map[string]int `json:"numberOfCriticalInstructions"`
 }
