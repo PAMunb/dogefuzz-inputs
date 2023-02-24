@@ -2,8 +2,8 @@ package common
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
+	"os"
 )
 
 func GenerateJsonFileFromContractInfoSlice(contractSlice []ContractInfo) {
@@ -12,7 +12,7 @@ func GenerateJsonFileFromContractInfoSlice(contractSlice []ContractInfo) {
 		log.Fatal(err)
 	}
 
-	err = ioutil.WriteFile("contracts/result.json", file, 0644)
+	err = os.WriteFile("result.json", file, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

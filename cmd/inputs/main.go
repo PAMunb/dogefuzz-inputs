@@ -69,9 +69,8 @@ func addFileRowToContractInfoMap(contractMap map[string]common.ContractInfo, row
 	contractMap[contract.Name] = contract
 }
 
-// need a fold called contracts with some contracts
 func readContractContent(contractName string) (string, error) {
-	data, err := os.ReadFile("contracts/" + contractName)
+	data, err := os.ReadFile(contractName)
 
 	return string(data), err
 }
