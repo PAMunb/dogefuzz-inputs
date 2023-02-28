@@ -6,13 +6,15 @@ import (
 	"os"
 )
 
+const RESULT_JSON_PATH = "resources/result.json"
+
 func GenerateJsonFileFromContractInfoSlice(contractSlice []ContractInfo) {
-	file, err := json.MarshalIndent(contractSlice, "", "   ")
+	file, err := json.MarshalIndent(contractSlice, "", "\t")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = os.WriteFile("result.json", file, 0644)
+	err = os.WriteFile(RESULT_JSON_PATH, file, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
