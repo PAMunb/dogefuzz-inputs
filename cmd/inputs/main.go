@@ -12,6 +12,8 @@ import (
 
 var criticalInstructions = []string{"CALL", "SELFDESTRUCT", "CALLCODE", "DELEGATECALL"}
 
+var CONTRACTS_PATH = "resources/contracts/"
+
 func main() {
 	contractSlice := make([]common.ContractInfo, 0)
 	data := make([][]string, 0)
@@ -33,6 +35,9 @@ func main() {
 			setNumberOfCriticalInstructions(&contractSlice[i], criticalInstructions)
 		}
 	}
+
+	common.GenerateJsonFileFromContractInfoSlice(contractSlice)
+
 }
 
 func createContractInfoSlice(data [][]string) []common.ContractInfo {
@@ -67,20 +72,19 @@ func addFileRowToContractInfoMap(contractMap map[string]common.ContractInfo, row
 	contractMap[contract.Name] = contract
 }
 
-// need a fold called contracts with some contracts
-func readContractContent(contractName string) (string, error) {
-	data, err := os.ReadFile("contracts/" + contractName)
+func readContractContent(contractName string) ([]byte, error) {
+	data, err := os.ReadFile(CONTRACTS_PATH + contractName)
 
-	return string(data), err
+	return data, err
 }
 
-func getNumberOfBlocksAndCriticalInstructions(contractName string, contractContent string) (int, int, map[string]int) {
+func getNumberOfBlocksAndCriticalInstructions(contractName string, contractContent []byte) (int, int, map[string]int) {
 	var blocks, branches int
 	criticalInstructionsMap := make(map[string]int)
 
 	compiler := solc.NewSolidityCompiler("/tmp/dogefuzz/")
 	name := strings.Split(contractName, ".")
-	contract, _ := compiler.CompileSource(name[0], contractContent)
+	contract, _ := compiler.CompileSource(name[0], string(contractContent))
 
 	c := vandal.NewVandalClient("http://localhost:5005")
 	blockSlice, _, _ := c.Decompile(context.Background(), contract.CompiledCode)
@@ -93,6 +97,7 @@ func getNumberOfBlocksAndCriticalInstructions(contractName string, contractConte
 			for i := 0; i < len(criticalInstructions); i++ {
 				if v.Op == criticalInstructions[i] {
 					criticalInstructionsMap[v.Op]++
+					break
 				}
 			}
 
