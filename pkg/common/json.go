@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const RESULT_JSON_PATH = "resources/result.json"
+const RESULT_JSON_PATH = "result.json"
 
 func GenerateJsonFileFromContractInfoSlice(contractSlice []ContractInfo) {
 	file, err := json.MarshalIndent(contractSlice, "", "\t")
