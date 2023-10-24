@@ -32,6 +32,7 @@ type Function struct {
 }
 
 type ContractInfo struct {
+	File                         string         `json:"file"`
 	Name                         string         `json:"name"`
 	Weaknesses                   []string       `json:"weaknesses"`
 	Link                         string         `json:"link"`

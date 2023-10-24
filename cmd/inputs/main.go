@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 	"strings"
 
@@ -23,12 +24,11 @@ func main() {
 	contractSlice = createContractInfoSlice(data)
 
 	for i := 0; i < len(contractSlice); i++ {
-		contractContent, err := readContractContent(contractSlice[i].Name)
+		contractContent, err := readContractContent(contractSlice[i].File)
 
 		if err == nil {
-			contractName := strings.Split(contractSlice[i].Name, ".")
 
-			blocks, branches, criticalInstructions := getNumberOfBlocksAndCriticalInstructions(contractName[0], contractContent)
+			blocks, branches, criticalInstructions := getNumberOfBlocksAndCriticalInstructions(contractSlice[i].Name, contractContent)
 
 			setNumberOfBlocks(&contractSlice[i], blocks)
 			setNumberOfBranches(&contractSlice[i], branches)
@@ -61,15 +61,16 @@ func convertContractInfoMapToContractInfoSlice(contractMap map[string]common.Con
 func addFileRowToContractInfoMap(contractMap map[string]common.ContractInfo, row []string) {
 	var contract common.ContractInfo
 
-	contract.Name = row[0]
-	contract.Link = row[2]
-	if v, exists := contractMap[contract.Name]; exists {
-		contract.Weaknesses = append(v.Weaknesses, row[1])
+	contract.File = row[0]
+	contract.Name = row[1]
+	contract.Link = row[3]
+	if v, exists := contractMap[contract.File]; exists {
+		contract.Weaknesses = append(v.Weaknesses, row[2])
 	} else {
-		contract.Weaknesses = append(contract.Weaknesses, row[1])
+		contract.Weaknesses = append(contract.Weaknesses, row[2])
 	}
 
-	contractMap[contract.Name] = contract
+	contractMap[contract.File] = contract
 }
 
 func readContractContent(contractName string) ([]byte, error) {
@@ -84,10 +85,17 @@ func getNumberOfBlocksAndCriticalInstructions(contractName string, contractConte
 
 	compiler := solc.NewSolidityCompiler("/tmp/dogefuzz/")
 	name := strings.Split(contractName, ".")
-	contract, _ := compiler.CompileSource(name[0], string(contractContent))
+	contract, err := compiler.CompileSource(name[0], string(contractContent))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	c := vandal.NewVandalClient("http://localhost:5005")
-	blockSlice, _, _ := c.Decompile(context.Background(), contract.CompiledCode)
+	blockSlice, _, err := c.Decompile(context.Background(), contract.CompiledCode, contractName)
+	if err != nil {
+		log.Fatal(err)
+		return 0, 0, criticalInstructionsMap
+	}
 
 	blocks = len(blockSlice)
 

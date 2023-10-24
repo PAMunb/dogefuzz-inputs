@@ -82,12 +82,10 @@ func (c *solidityCompiler) getSolcBinaryLocationIfExists(version *semver.Version
 	solcBinaryName := fmt.Sprintf("solcV%s", getSimplifiedVersionString(version))
 	solcBinaryAbsolutePath := path.Join(solcDestinationFolder, solcBinaryName)
 	info, err := os.Stat(solcBinaryAbsolutePath)
-	if os.IsNotExist(err) {
+	if os.IsNotExist(err) || info.IsDir() || info.Size() == 0 {
 		return "", false
 	}
-	if info.IsDir() {
-		return "", false
-	}
+
 	return solcBinaryAbsolutePath, true
 }
 

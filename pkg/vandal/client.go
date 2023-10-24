@@ -16,6 +16,7 @@ const DELIMITER = "================================"
 
 type VandalDecompileRequest struct {
 	Source string `json:"source"`
+	Name   string `json:"name"`
 }
 
 type vandalClient struct {
@@ -26,8 +27,8 @@ func NewVandalClient(vandalEndpoint string) *vandalClient {
 	return &vandalClient{endpoint: vandalEndpoint}
 }
 
-func (c *vandalClient) Decompile(ctx context.Context, source string) ([]common.Block, []common.Function, error) {
-	body, err := json.Marshal(VandalDecompileRequest{Source: source})
+func (c *vandalClient) Decompile(ctx context.Context, source string, name string) ([]common.Block, []common.Function, error) {
+	body, err := json.Marshal(VandalDecompileRequest{Source: source, Name: name})
 	if err != nil {
 		return nil, nil, err
 	}
