@@ -3,6 +3,6 @@ version: "3.9"
 services:
   vandal:
     container_name: dogefuzz_vandal
-    build: https://github.com/dogefuzz/vandal-api.git#main
+    build: https://github.com/pamunb/dogefuzz-vandal-api.git#main
     ports:
       - "5005:5000"
