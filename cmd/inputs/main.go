@@ -91,7 +91,7 @@ func getNumberOfBlocksAndCriticalInstructions(contractName string, contractConte
 	}
 
 	c := vandal.NewVandalClient("http://localhost:5005")
-	blockSlice, _, err := c.Decompile(context.Background(), contract.CompiledCode, contractName)
+	blockSlice, _, err := c.Decompile(context.Background(), contract.RuntimeBytecode, contractName)
 	if err != nil {
 		log.Fatal(err)
 		return 0, 0, criticalInstructionsMap
